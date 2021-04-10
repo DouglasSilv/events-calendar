@@ -1,0 +1,5 @@
+my-calendar {
+  display: flex;
+  flex-wrap: wrap;
+  color: var(--white);
+}
