@@ -1,0 +1,20 @@
+.month-calendar {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.month-calendar-title {
+  text-align: center;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.month-calendar-weekdays {
+  display: flex;
+  justify-content: space-between;
+}
+
+.month-calendar-weekday {
+  text-align: center;
+  width: 8rem;
+}

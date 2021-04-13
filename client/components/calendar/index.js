@@ -6,8 +6,8 @@ class Calendar extends HTMLElement {
 }
 
 const buildCalendarHTML = () => {
-  const months = Array(13).fill();
-  return months.reduce((html, value, index) => `${html ?? ''} <calendar-month month=${index - 1} events="0"></calendar-month> \n`);
+  const months = Array(12).fill();
+  return mapRender(months, (value, index) => `<calendar-month month=${index } events="0"></calendar-month> \n`);
 }
 
 customElements.define('my-calendar', Calendar);
