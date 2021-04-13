@@ -18,3 +18,33 @@
   text-align: center;
   width: 8rem;
 }
+
+.month-calendar-days {
+  display: flex;
+  flex-flow: row wrap;
+  margin-top: 1rem;
+}
+
+.month-calendar-day {
+  border-radius: 10px;
+  border: 0.5px solid var(--gray-line);
+  margin: 4px;
+  background-color: rgb(242, 242, 242);
+  flex: 0 1 calc(14.28% - 8px);
+  height: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-family: Rajdhani;
+}
+
+.month-calendar-day-valid {
+  background-color: var(--blue-light);
+  cursor: pointer;
+  transition: transform .1s;
+}
+
+.month-calendar-day-valid:hover {
+  transform: scale(1.05);
+}

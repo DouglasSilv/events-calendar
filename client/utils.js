@@ -7,7 +7,10 @@ const daysInMonth = (month, year) => {
   return Array.from(Array(date).keys());
 };
 
-const mapRender = (array, func) => {
-  return array.reduce((html, value, index) => 
-          `${index === 1 ? `${func(value, index)} \n` : html}${func(value, index)} \n`);
-};
+const mapRender = (array, func) => array.reduce((html, value, index) => { 
+  const transformedValue = func(value, index);
+  if (!transformedValue) return html;
+  return html + transformedValue;
+}, '');
+
+const concatenateHTMLs = (...arguments) => mapRender(arguments, value => value);

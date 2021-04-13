@@ -14,12 +14,13 @@ class CalendarMonth extends HTMLElement {
 }
 
 const buildCalendarMonthHTML = (month, events) => {
-  return '<div class="calendar-month-title">' +
-            month +
-          '</div>' +
-          '<div class="calendar-month-events">' +
-            `${events} eventos` +
-          '</div>';
+  return concatenateHTMLs(
+          '<div class="calendar-month-title">',
+            month,
+          '</div>',
+          '<div class="calendar-month-events">',
+            `${events} eventos`,
+          '</div>');
 }
 
 customElements.define('calendar-month', CalendarMonth);
