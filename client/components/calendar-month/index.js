@@ -8,8 +8,12 @@ class CalendarMonth extends HTMLElement {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(event) {
-    render('<month-calendar></month-calendar>', document.getElementById('root'));
+  handleClick() {
+    store.selectedMonth = this.getAttribute("month");
+    render(concatenateHTMLs(
+              '<month-calendar></month-calendar>', 
+              '<day-modal id="day-modal" active="false"></day-modal>'
+            ), document.getElementById('root'));
   }
 }
 

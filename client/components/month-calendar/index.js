@@ -2,6 +2,20 @@ class MonthCalendar extends HTMLElement {
   connectedCallback() {
     this.innerHTML = buildMonthCalendarHTML();
     console.log('MonthCalendar added to DOM');
+    this.addEventListener('click', this.handleClick, false);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick({ target }) {
+    const isValidDay = target?.className.includes('month-calendar-day-valid');
+    if (isValidDay) {
+      const day = target.innerHTML;
+      const month = Number(store.selectedMonth) + 1;
+      const year = new Date().getFullYear();
+      store.dateToCreateEvent = new Date(`${month}/${day}/${year}`);
+      const modal = document.getElementById('day-modal');
+      modal.setAttribute('active', true);
+    }
   }
 }
 
@@ -10,9 +24,10 @@ const buildMonthCalendarHTML = () => {
   const gridColumns = 7;
 
   const year = new Date().getFullYear();
-  const month = 'Janeiro';
-  const startingWeekday = new Date(year, 1).getDay();
-  const days = daysInMonth(1, year);
+  const { selectedMonth } = store;
+  const month = MONTHS[selectedMonth];
+  const startingWeekday = new Date(year, selectedMonth).getDay();
+  const days = daysInMonth(selectedMonth, year);
   const startingBlankItems = Array.from(Array(startingWeekday).keys());
   const countEndingItems =
     gridRows * gridColumns - days.length - startingBlankItems.length;
