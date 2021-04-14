@@ -7,6 +7,7 @@ const cors = require('cors');
 const httpStatus = require('http-status');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
+const eventsRoutes = require('./routes/event.route');
 
 const app = express();
 
@@ -20,10 +21,14 @@ app.use(mongoSanitize());
 
 app.use(compression());
 
+
 app.use(cors());
 app.options('*', cors());
 
-app.use((req, res, next) => {
+
+eventsRoutes.forEach(route => app[route.mapping](route.path, route.callback));
+
+app.get('*', (req, res, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
 });
 
