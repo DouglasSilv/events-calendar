@@ -13,6 +13,11 @@ const routes = [
     mapping: 'post',
     path: ROUTE,
     callback: eventController.createEvent
+  },
+  {
+    mapping: 'get',
+    path: `${ROUTE}/count-by-month/:month`,
+    callback: eventController.countMonthGroupedByDay
   }
 ]
 

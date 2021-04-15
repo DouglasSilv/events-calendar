@@ -1,13 +1,15 @@
 class MonthCalendar extends HTMLElement {
-  connectedCallback() {
-    this.innerHTML = buildMonthCalendarHTML();
+  async connectedCallback() {
+    const { selectedMonth } = store;
+    const events = await eventService.getEventsByMonthGroupedByDay(selectedMonth);
+    this.innerHTML = buildMonthCalendarHTML(events);
     console.log('MonthCalendar added to DOM');
     this.addEventListener('click', this.handleClick, false);
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick({ target }) {
-    const isValidDay = target?.className.includes('month-calendar-day-valid');
+    const isValidDay = target?.className.includes('day-valid');
     const isBackButton = target.id === 'month-calendar-back-button';
     if (isValidDay) {
       const day = target.innerHTML;
@@ -22,7 +24,7 @@ class MonthCalendar extends HTMLElement {
   }
 }
 
-const buildMonthCalendarHTML = () => {
+const buildMonthCalendarHTML = events => {
   const gridRows = 6;
   const gridColumns = 7;
 
@@ -57,7 +59,7 @@ const buildMonthCalendarHTML = () => {
               '</div>',
               '<div class="month-calendar-days">',
                 mapRender(startingBlankItems, () => '<div class="month-calendar-day"></div>'),
-                mapRender(days, value => `<div class="month-calendar-day month-calendar-day-valid">${value + 1}</div>`),
+                mapRender(days, value => `<div class="month-calendar-day day-valid ${events[value + 1] > 0 ? 'has-events' : ''}">${value + 1}</div>`),
                 mapRender(endingBlankItems, () => '<div class="month-calendar-day"></div>'),
               '</div>',
             '</div>',

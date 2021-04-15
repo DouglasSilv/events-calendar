@@ -14,5 +14,10 @@ const eventService = {
     return fetch(`${URL}/events/count-by-months`)
       .then(response => response.json())
       .catch(err => console.log('Request Failed', err));
+  },
+  getEventsByMonthGroupedByDay: month => {
+    return fetch(`${URL}/events/count-by-month/${month}`)
+      .then(response => response.json())
+      .catch(err => console.log('Request Failed', err));
   }
 }

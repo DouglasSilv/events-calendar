@@ -39,10 +39,14 @@
   font-family: Rajdhani;
 }
 
-.month-calendar-day-valid {
+.month-calendar-day ~ .day-valid {
   background-color: var(--blue-light);
   cursor: pointer;
   transition: transform .1s;
+}
+
+.month-calendar-day ~ .has-events {
+  background-color: var(--green);
 }
 
 .month-calendar-day-valid:hover {
