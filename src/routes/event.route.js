@@ -8,6 +8,11 @@ const routes = [
     mapping: 'get',
     path: ROUTE,
     callback: eventController.getEvents
+  },
+  {
+    mapping: 'post',
+    path: ROUTE,
+    callback: eventController.createEvent
   }
 ]
 

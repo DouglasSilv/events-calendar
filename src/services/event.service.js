@@ -5,7 +5,13 @@ const queryEvents = async () => {
   return users;
 };
 
+const createEvent = async eventBody => {
+  const saved = await Event.create(eventBody);
+  return saved;
+};
+
 
 module.exports = {
   queryEvents,
+  createEvent
 };

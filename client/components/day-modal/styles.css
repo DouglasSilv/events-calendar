@@ -7,14 +7,46 @@ day-modal {
   width: 100%; 
   height: 100%; 
   overflow: auto;
-  background-color: rgb(0,0,0); 
   background-color: rgba(0,0,0,0.4);
 }
 
 .day-modal-content {
   background-color: var(--white);
   margin: auto;
-  padding: 20px;
+  padding: 2rem;
   border-radius: 10px;
   width: 60rem;
+}
+
+.day-modal-title {
+  border-bottom: 1px solid var(--gray-line);
+  line-height: 2rem;
+  font-size: 1.5rem;
+}
+
+.day-modal-add-new {
+  margin-top: 1rem;
+}
+
+.day-modal-add-new-title {
+  margin-bottom: 1rem;
+}
+
+.day-modal-add-new input {
+  height: 30px;
+  border-radius: 5px;
+  padding: 3px;
+  border: 1px solid black;
+}
+
+.day-modal-add-new button {
+  padding: 6px;
+  border-radius: 5px;
+  color: var(--white);
+  border: unset;
+  background-color: var(--blue-dark);
+}
+
+.day-modal-add-new input:not(:last-child) {
+  margin-right: 15px;
 }

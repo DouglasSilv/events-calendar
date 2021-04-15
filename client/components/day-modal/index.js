@@ -22,10 +22,24 @@ class DayModal extends HTMLElement {
     return this.getAttribute('active') === 'true';
   }
 
-  handleClick({ target }) {
+  async handleClick({ target }) {
     const isClickOutside = target.id === 'day-modal';
+    const isAddNewClick = target.id === 'submit';
     if (this.isActive() && isClickOutside) {
       this.style.display = 'none';
+    } else if (isAddNewClick) {
+      const name = document.getElementById('event-name').value;
+      const time = document.getElementById('event-time').value;
+      const date = new Date(store.dateToCreateEvent);
+      const [hours, minutes] = time.split(':');
+      date.setHours(hours);
+      date.setMinutes(minutes);
+      const event = {
+        name,
+        date
+      }
+      const savedEvent = await eventService.createEvent(event);
+      console.log(savedEvent);
     }
   }
 }
@@ -37,7 +51,19 @@ const buildDayModalHTML = () => {
   const year = dateToCreateEvent.getFullYear();
   return concatenateHTMLs(
           '<div class="day-modal-content">',
-            `${day} de ${month} de ${year}`,
+            '<div class="day-modal-title">',
+              `${day} de ${month} de ${year}`,
+            '</div>',
+            '<div>',
+              '<div class="day-modal-add-new">',
+                '<div class="day-modal-add-new-title">',
+                  'Adicionar novo evento',
+                '</div>',  
+                '<input placeholder="Nome do evento" id="event-name" >',
+                '<input placeholder="Horário do evento" id="event-time" type="time">',
+                '<button id="submit" >Adicionar</button>',
+              '</div>',
+            '</div>',
           '</div>');
 }
 
