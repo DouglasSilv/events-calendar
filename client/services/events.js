@@ -8,6 +8,11 @@ const eventService = {
       headers: {"Content-type": "application/json; charset=UTF-8"}
     })
     .then(response => response.json()) 
-    .catch(err => console.log(err));
+    .catch(err => console.log('Request Failed', err));
+  },
+  getEventsGroupedByMonth: () => {
+    return fetch(`${URL}/events/count-by-months`)
+      .then(response => response.json())
+      .catch(err => console.log('Request Failed', err));
   }
 }

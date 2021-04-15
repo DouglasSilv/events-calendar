@@ -48,3 +48,19 @@
 .month-calendar-day-valid:hover {
   transform: scale(1.05);
 }
+
+.month-calendar-header {
+  position: relative;
+}
+
+.month-calendar-back {
+  position: absolute;
+  margin-top: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform .1s;
+}
+
+.month-calendar-back:hover {
+  transform: scale(1.05);
+}

@@ -29,14 +29,23 @@ class DayModal extends HTMLElement {
       this.style.display = 'none';
     } else if (isAddNewClick) {
       const name = document.getElementById('event-name').value;
-      const time = document.getElementById('event-time').value;
-      const date = new Date(store.dateToCreateEvent);
-      const [hours, minutes] = time.split(':');
-      date.setHours(hours);
-      date.setMinutes(minutes);
+
+      const timeStart = document.getElementById('event-time-start').value;
+      const startAt = new Date(store.dateToCreateEvent);
+      const [hoursStart, minutesStart] = timeStart.split(':');
+      startAt.setHours(hoursStart);
+      startAt.setMinutes(minutesStart);
+
+      const timeEnd = document.getElementById('event-time-end').value;
+      const endAt = new Date(store.dateToCreateEvent);
+      const [hoursEnd, minutesEnd] = timeEnd.split(':');
+      endAt.setHours(hoursEnd);
+      endAt.setMinutes(minutesEnd);
+
       const event = {
         name,
-        date
+        startAt,
+        endAt
       }
       const savedEvent = await eventService.createEvent(event);
       console.log(savedEvent);
@@ -60,7 +69,8 @@ const buildDayModalHTML = () => {
                   'Adicionar novo evento',
                 '</div>',  
                 '<input placeholder="Nome do evento" id="event-name" >',
-                '<input placeholder="Horário do evento" id="event-time" type="time">',
+                'Inicio: <input id="event-time-start" type="time">',
+                'Fim: <input id="event-time-end" type="time">',
                 '<button id="submit" >Adicionar</button>',
               '</div>',
             '</div>',

@@ -1,8 +1,12 @@
 const { Event } = require('../models');
 
-const queryEvents = async () => {
-  const users = await Event.find();
-  return users;
+const countGroupedByMonth = async () => {
+  const events = await Event.find();
+  const groupedEvents = {};
+  Array(12).fill().forEach((month, index) => {
+    groupedEvents[index] = events.filter(event => event.startAt.getMonth() === index).length;
+  })
+  return groupedEvents;
 };
 
 const createEvent = async eventBody => {
@@ -12,6 +16,6 @@ const createEvent = async eventBody => {
 
 
 module.exports = {
-  queryEvents,
+  countGroupedByMonth,
   createEvent
 };

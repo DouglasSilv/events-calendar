@@ -8,6 +8,7 @@ class MonthCalendar extends HTMLElement {
 
   handleClick({ target }) {
     const isValidDay = target?.className.includes('month-calendar-day-valid');
+    const isBackButton = target.id === 'month-calendar-back-button';
     if (isValidDay) {
       const day = target.innerHTML;
       const month = Number(store.selectedMonth) + 1;
@@ -15,6 +16,8 @@ class MonthCalendar extends HTMLElement {
       store.dateToCreateEvent = new Date(`${month}/${day}/${year}`);
       const modal = document.getElementById('day-modal');
       modal.setAttribute('active', true);
+    } else if (isBackButton) {
+      render('<my-calendar></my-calendar>', document.getElementById('root'));
     }
   }
 }
@@ -34,8 +37,13 @@ const buildMonthCalendarHTML = () => {
   const endingBlankItems = Array.from(Array(countEndingItems).keys());
   return concatenateHTMLs(
           '<div class="month-calendar">',
-            '<div class="month-calendar-title">',
+            '<div class="month-calendar-header">',
+              '<div class="month-calendar-back" id="month-calendar-back-button">',
+                'Voltar',
+              '</div>',
+              '<div class="month-calendar-title">',
               `${month}, ${year}`,
+              '</div>',
             '</div>',
             '<div class="month-calendar-body">',
               '<div class="month-calendar-weekdays">',

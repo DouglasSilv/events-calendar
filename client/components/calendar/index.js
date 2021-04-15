@@ -1,13 +1,14 @@
 class Calendar extends HTMLElement {
-  connectedCallback() {
-    this.innerHTML = buildCalendarHTML();
+  async connectedCallback() {
+    const count = await eventService.getEventsGroupedByMonth();
+    this.innerHTML = buildCalendarHTML(count);
     console.log('Calendar added to DOM');
   }
 }
 
-const buildCalendarHTML = () => {
+const buildCalendarHTML = count => {
   const months = Array(12).fill();
-  return mapRender(months, (value, index) => `<calendar-month month=${index} events="0"></calendar-month> \n`);
+  return mapRender(months, (_, index) => `<calendar-month month=${index} events="${count[index]}"></calendar-month> \n`);
 }
 
 customElements.define('my-calendar', Calendar);
