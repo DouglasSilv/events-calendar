@@ -18,8 +18,14 @@ const createEvent = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(event);
 });
 
+const getEventsByDay = catchAsync(async (req, res) => {
+  const events = await eventService.getEventsByDay(req.params.date);
+  res.send(events);
+});
+
 module.exports = {
   countGroupedByMonth,
   countMonthGroupedByDay,
-  createEvent
+  createEvent,
+  getEventsByDay
 };

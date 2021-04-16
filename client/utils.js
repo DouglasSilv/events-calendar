@@ -13,4 +13,8 @@ const mapRender = (array, func) => array.reduce((html, value, index) => {
   return html + transformedValue;
 }, '');
 
+const addZeroes = (hourOrMinutes = '') => {
+  return Array(3 - String(hourOrMinutes).length).join('0') + String(hourOrMinutes) 
+}
+
 const concatenateHTMLs = (...arguments) => mapRender(arguments, value => value);

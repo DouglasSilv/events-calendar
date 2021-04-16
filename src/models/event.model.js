@@ -18,11 +18,6 @@ const eventSchema = mongoose.Schema(
   }
 )
 
-eventSchema.pre('save', async function (next) {
-  // TODO: validar se ja existe evento com mesmo nome na mesma data
-  next();
-});
-
 /**
  * @typedef Event
  */

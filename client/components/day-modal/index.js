@@ -1,5 +1,5 @@
 class DayModal extends HTMLElement {
-  connectedCallback() {
+  async connectedCallback() {
     console.log('Day Modal added to DOM');
     this.addEventListener('click', this.handleClick, false);
     this.handleClick = this.handleClick.bind(this);
@@ -9,9 +9,11 @@ class DayModal extends HTMLElement {
     return ['active'];
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
+  async attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'active' && this.isActive()) {
-      this.innerHTML = buildDayModalHTML();
+      const { dateToCreateEvent } = store;
+      const events = await eventService.getEventsByDate(dateToCreateEvent);
+      this.innerHTML = buildDayModalHTML(events);
       this.style.display = 'flex';
     } else {
       this.style.display = 'none';
@@ -29,14 +31,15 @@ class DayModal extends HTMLElement {
       this.style.display = 'none';
     } else if (isAddNewClick) {
       const name = document.getElementById('event-name').value;
-
       const timeStart = document.getElementById('event-time-start').value;
+      const timeEnd = document.getElementById('event-time-end').value;
+      if (!name || !timeStart || !timeEnd) return;
+
       const startAt = new Date(store.dateToCreateEvent);
       const [hoursStart, minutesStart] = timeStart.split(':');
       startAt.setHours(hoursStart);
       startAt.setMinutes(minutesStart);
 
-      const timeEnd = document.getElementById('event-time-end').value;
       const endAt = new Date(store.dateToCreateEvent);
       const [hoursEnd, minutesEnd] = timeEnd.split(':');
       endAt.setHours(hoursEnd);
@@ -47,13 +50,17 @@ class DayModal extends HTMLElement {
         startAt,
         endAt
       }
-      const savedEvent = await eventService.createEvent(event);
-      console.log(savedEvent);
+      await eventService.createEvent(event);
+      const [ monthCalendarComponent ] = document.getElementsByTagName('month-calendar');
+      monthCalendarComponent.connectedCallback();
+      const { dateToCreateEvent } = store;
+      const events = await eventService.getEventsByDate(dateToCreateEvent);
+      this.innerHTML = buildDayModalHTML(events);
     }
   }
 }
 
-const buildDayModalHTML = () => {
+const buildDayModalHTML = events => {
   const { dateToCreateEvent } = store;
   const day = dateToCreateEvent.getDate();
   const month = MONTHS[dateToCreateEvent.getMonth()];
@@ -67,12 +74,29 @@ const buildDayModalHTML = () => {
               '<div class="day-modal-add-new">',
                 '<div class="day-modal-add-new-title">',
                   'Adicionar novo evento',
-                '</div>',  
-                '<input placeholder="Nome do evento" id="event-name" >',
-                'Inicio: <input id="event-time-start" type="time">',
-                'Fim: <input id="event-time-end" type="time">',
-                '<button id="submit" >Adicionar</button>',
+                '</div>',
+                '<form onsubmit="return false">',
+                  '<input required placeholder="Nome do evento" id="event-name" >',
+                  'Inicio: <input required id="event-time-start" type="time">',
+                  'Fim: <input required id="event-time-end" type="time">',
+                  '<button id="submit" >Adicionar</button>',
+                '</form>',
               '</div>',
+              events.length > 0 && concatenateHTMLs(
+              '<div class="day-modal-list-title">',
+                'Lista de eventos',
+              '</div>',
+              '<ul class="day-modal-list">',
+                mapRender(events, event => {
+                  const startAt = new Date(event.startAt);
+                  const endAt = new Date(event.endAt);
+                  const startAtHours = addZeroes(startAt.getHours());
+                  const startAtMinutes = addZeroes(startAt.getMinutes());
+                  const endAtHours = addZeroes(endAt.getHours());
+                  const endAtMinutes = addZeroes(endAt.getMinutes());
+                  return `<li>${event.name} - <strong>Inicio</strong>: ${startAtHours}:${startAtMinutes} / <strong>Fim</strong>: ${endAtHours}:${endAtMinutes}</li>`
+                }),
+              '</ul>'),
             '</div>',
           '</div>');
 }

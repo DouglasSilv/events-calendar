@@ -50,3 +50,15 @@ day-modal {
 .day-modal-add-new input:not(:last-child) {
   margin-right: 15px;
 }
+
+.day-modal-list-title {
+  margin-top: 30px;
+}
+
+.day-modal-list {
+  margin-top: 20px;
+}
+
+.day-modal-list li {
+  margin-left: 15px;
+}
