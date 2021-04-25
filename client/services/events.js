@@ -5,7 +5,7 @@ const eventService = {
     return fetch(`${URL}/events`, {
       method: "POST",
       body: JSON.stringify(data),
-      headers: {"Content-type": "application/json; charset=UTF-8"}
+      headers: { 'Content-type': 'application/json; charset=UTF-8' }
     })
     .then(response => response.json()) 
     .catch(err => console.log('Request Failed', err));
@@ -24,5 +24,11 @@ const eventService = {
     return fetch(`${URL}/events/by-date/${date.toISOString()}`)
       .then(response => response.json())
       .catch(err => console.log('Request Failed', err));
+  },
+  deleteEvent: id => {
+    return fetch(`${URL}/events/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-type': 'application/json; charset=UTF-8' }
+    }).catch(err => console.log('Request Failed', err));
   }
 }

@@ -27,6 +27,7 @@ class DayModal extends HTMLElement {
   async handleClick({ target }) {
     const isClickOutside = target.id === 'day-modal';
     const isAddNewClick = target.id === 'submit';
+    const isRemoveClick = target.id.includes('remove-');
     if (this.isActive() && isClickOutside) {
       this.style.display = 'none';
     } else if (isAddNewClick) {
@@ -51,6 +52,14 @@ class DayModal extends HTMLElement {
         endAt
       }
       await eventService.createEvent(event);
+      const [ monthCalendarComponent ] = document.getElementsByTagName('month-calendar');
+      monthCalendarComponent.connectedCallback();
+      const { dateToCreateEvent } = store;
+      const events = await eventService.getEventsByDate(dateToCreateEvent);
+      this.innerHTML = buildDayModalHTML(events);
+    } else if (isRemoveClick) {
+      const [ ,id ] = target.id.split('-');
+      await eventService.deleteEvent(id);
       const [ monthCalendarComponent ] = document.getElementsByTagName('month-calendar');
       monthCalendarComponent.connectedCallback();
       const { dateToCreateEvent } = store;
@@ -94,7 +103,7 @@ const buildDayModalHTML = events => {
                   const startAtMinutes = addZeroes(startAt.getMinutes());
                   const endAtHours = addZeroes(endAt.getHours());
                   const endAtMinutes = addZeroes(endAt.getMinutes());
-                  return `<li>${event.name} - <strong>Inicio</strong>: ${startAtHours}:${startAtMinutes} / <strong>Fim</strong>: ${endAtHours}:${endAtMinutes}</li>`
+                  return `<li>${event.name} - <strong>Inicio</strong>: ${startAtHours}:${startAtMinutes} / <strong>Fim</strong>: ${endAtHours}:${endAtMinutes}<img src="images/trash_remove_icon.png" class="day-modal-list-remove" id="remove-${event._id}"></img></li>`
                 }),
               '</ul>'),
             '</div>',

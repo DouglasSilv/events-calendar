@@ -36,15 +36,21 @@ const getEventsByDay = async date => {
   });
 };
 
+const deleteById = async id => {
+  await Event.findOneAndDelete( {
+    _id: id
+  });
+};
+
 const createEvent = async eventBody => {
   const saved = await Event.create(eventBody);
   return saved;
 };
 
-
 module.exports = {
   countGroupedByMonth,
   countMonthGroupedByDay,
   createEvent,
-  getEventsByDay
+  getEventsByDay,
+  deleteById
 };

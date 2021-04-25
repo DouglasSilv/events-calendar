@@ -23,6 +23,11 @@ const routes = [
     mapping: 'get',
     path: `${ROUTE}/by-date/:date`,
     callback: eventController.getEventsByDay
+  }, 
+  {
+    mapping: 'delete',
+    path: `${ROUTE}/:id`,
+    callback: eventController.deleteById
   }
 ]
 
