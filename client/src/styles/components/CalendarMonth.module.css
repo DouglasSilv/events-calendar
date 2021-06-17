@@ -1,10 +1,10 @@
-.calendar-month-title {
+.calendarMonthTitle {
   font-family: Rajdhani;
   font-size: 1.3rem;
   border-bottom: 1px solid var(--gray-line);
 }
 
-calendar-month {
+.calendarMonth {
   flex: 1 0 21%;
   margin: 5px;
   height: 10rem;
@@ -16,14 +16,14 @@ calendar-month {
   flex-direction: column;
   cursor: pointer;
 
-  transition: transform .1s;
+  transition: transform 0.1s;
 }
 
-calendar-month:hover {
+.calendarMonth:hover {
   transform: scale(1.02);
 }
 
-.calendar-month-events {
+.calendarMonthEvents {
   display: flex;
   align-items: center;
   justify-content: center;

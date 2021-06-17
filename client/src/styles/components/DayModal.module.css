@@ -1,16 +1,20 @@
-day-modal {
+.dayModal {
   display: none;
   position: fixed;
   z-index: 1;
   left: 0;
   top: 0;
-  width: 100%; 
-  height: 100%; 
+  width: 100%;
+  height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
-.day-modal-content {
+.dayModalOpen {
+  display: flex;
+}
+
+.dayModalContent {
   background-color: var(--white);
   margin: auto;
   padding: 2rem;
@@ -18,28 +22,28 @@ day-modal {
   width: 60rem;
 }
 
-.day-modal-title {
+.dayModalTitle {
   border-bottom: 1px solid var(--gray-line);
   line-height: 2rem;
   font-size: 1.5rem;
 }
 
-.day-modal-add-new {
+.dayModalAddNew {
   margin-top: 1rem;
 }
 
-.day-modal-add-new-title {
+.dayModalAddNewTitle {
   margin-bottom: 1rem;
 }
 
-.day-modal-add-new input {
+.dayModalAddNew input {
   height: 30px;
   border-radius: 5px;
   padding: 3px;
   border: 1px solid black;
 }
 
-.day-modal-add-new button {
+.dayModalAddNew button {
   padding: 6px;
   border-radius: 5px;
   color: var(--white);
@@ -47,23 +51,23 @@ day-modal {
   background-color: var(--blue-dark);
 }
 
-.day-modal-add-new input:not(:last-child) {
+.dayModalAddNew input:not(:last-child) {
   margin-right: 15px;
 }
 
-.day-modal-list-title {
+.dayModalListTitle {
   margin-top: 30px;
 }
 
-.day-modal-list {
+.dayModalList {
   margin-top: 20px;
 }
 
-.day-modal-list li {
+.dayModalList li {
   margin-left: 15px;
 }
 
-.day-modal-list-remove {
+.dayModalListRemove {
   cursor: pointer;
   height: 25px;
   width: 25px;

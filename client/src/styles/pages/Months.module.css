@@ -1,4 +1,4 @@
-my-calendar {
+.myCalendar {
   display: flex;
   flex-wrap: wrap;
   color: var(--white);

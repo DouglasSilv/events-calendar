@@ -1,31 +1,31 @@
-.month-calendar {
+.monthCalendar {
   margin-top: 2rem;
   width: 100%;
 }
 
-.month-calendar-title {
+.monthCalendarTitle {
   text-align: center;
   font-size: 1.4rem;
   margin-bottom: 1rem;
 }
 
-.month-calendar-weekdays {
+.monthCalendarWeekdays {
   display: flex;
   justify-content: space-between;
 }
 
-.month-calendar-weekday {
+.monthCalendarWeekday {
   text-align: center;
   width: 8rem;
 }
 
-.month-calendar-days {
+.monthCalendarDays {
   display: flex;
   flex-flow: row wrap;
   margin-top: 1rem;
 }
 
-.month-calendar-day {
+.monthCalendarDay {
   border-radius: 10px;
   border: 0.5px solid var(--gray-line);
   margin: 4px;
@@ -38,34 +38,34 @@
   font-size: 3rem;
   font-family: Rajdhani;
 
-  transition: transform .1s;
+  transition: transform 0.1s;
 }
 
-.month-calendar-day ~ .day-valid {
+.monthCalendarDay ~ .dayValid {
   background-color: var(--blue-light);
   cursor: pointer;
 }
 
-.month-calendar-day ~ .has-events {
+.monthCalendarDay ~ .hasEvents {
   background-color: var(--green);
 }
 
-.month-calendar-day ~ .day-valid:hover {
+.monthCalendarDay ~ .dayValid:hover {
   transform: scale(1.05);
 }
 
-.month-calendar-header {
+.monthCalendarHeader {
   position: relative;
 }
 
-.month-calendar-back {
+.monthCalendarBack {
   position: absolute;
   margin-top: 5px;
   cursor: pointer;
   font-weight: 600;
-  transition: transform .1s;
+  transition: transform 0.1s;
 }
 
-.month-calendar-back:hover {
+.monthCalendarBack:hover {
   transform: scale(1.05);
 }
