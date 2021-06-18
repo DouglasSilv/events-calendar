@@ -14,6 +14,14 @@ const eventSchema = mongoose.Schema(
     endAt: {
       type: Date,
       required: true,
+    },
+    lat: {
+      type: Number,
+      required: true,
+    },
+    lng: {
+      type: Number, 
+      required: true,
     }
   }
 )

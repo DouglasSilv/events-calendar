@@ -1,10 +1,12 @@
-const API_URL = 'http://localhost:3000';
+const API_URL = process.env.REACT_APP_API_URL;
 
 export interface Event {
   _id?: string;
   name: string;
   startAt: Date;
   endAt: Date;
+  lat: number;
+  lng: number;
 }
 
 export const createEvent = (data: Event): Promise<Event> => {

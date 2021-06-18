@@ -3,8 +3,15 @@ import { MONTHS } from '../../constants';
 import { createEvent, deleteEvent, Event, getEventsByDate } from '../../services/event';
 import styles from '../../styles/components/DayModal.module.css';
 import removeIcon from '../../images/trash_remove_icon.png';
+import marker from '../../images/marker.png';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 const MODAL_SHADOW_ID = 'modal-shadow';
+
+interface Coords {
+  lat: number;
+  lng: number;
+}
 
 const DayModal: FunctionComponent<DayModalProps> = ({ dateToCreateEvent, setDateToCreateEvent }) => {
   const day = dateToCreateEvent?.getDate();
@@ -14,6 +21,11 @@ const DayModal: FunctionComponent<DayModalProps> = ({ dateToCreateEvent, setDate
   const [timeStart, setTimeStart] = useState<string>('');
   const [timeEnd, setTimeEnd] = useState<string>('');
   const [events, setEvents] = useState<Array<Event>>([]);
+  const [center, setCenter] = useState<Coords>({
+    lat: -29,
+    lng: -51,
+  });
+  const [currentPosition, setCurrentPosition] = useState<Coords>(center);
 
   const onModalClick = (event: React.MouseEvent<HTMLElement>) => {
     const id = (event.target as HTMLElement).id;
@@ -33,7 +45,17 @@ const DayModal: FunctionComponent<DayModalProps> = ({ dateToCreateEvent, setDate
         setEvents(await getEventsByDate(dateToCreateEvent || new Date()));
       })();
     }
+    navigator.geolocation.getCurrentPosition((position) => {
+      setCenter({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      });
+    });
   }, [dateToCreateEvent]);
+
+  useEffect(() => {
+    setCurrentPosition(center);
+  }, [center]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     const startAt = dateToCreateEvent ? new Date(dateToCreateEvent) : new Date();
@@ -51,6 +73,8 @@ const DayModal: FunctionComponent<DayModalProps> = ({ dateToCreateEvent, setDate
       name: eventName,
       startAt,
       endAt,
+      lat: currentPosition.lat,
+      lng: currentPosition.lng,
     };
     await createEvent(newEvent);
     setEvents(await getEventsByDate(dateToCreateEvent || new Date()));
@@ -67,6 +91,21 @@ const DayModal: FunctionComponent<DayModalProps> = ({ dateToCreateEvent, setDate
     }
   };
 
+  const containerStyle = {
+    width: '500px',
+    height: '250px',
+    display: 'inline-block',
+    borderRadius: '10px',
+    marginBottom: '10px',
+  };
+
+  const onMarkerDragEndOrClick = (event: any) => {
+    console.log(event.latLng);
+    const lat = event.latLng.lat();
+    const lng = event.latLng.lng();
+    setCurrentPosition({ lat, lng });
+  };
+
   return (
     <div
       className={`${styles.dayModal} ${Boolean(dateToCreateEvent) ? styles.dayModalOpen : ''}`}
@@ -80,6 +119,18 @@ const DayModal: FunctionComponent<DayModalProps> = ({ dateToCreateEvent, setDate
         <div>
           <div className={styles.dayModalAddNew}>
             <div className={styles.dayModalAddNewTitle}>Adicionar novo evento</div>
+            {Boolean(dateToCreateEvent) && (
+              <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY ?? ''}>
+                <GoogleMap
+                  zoom={10}
+                  mapContainerStyle={containerStyle}
+                  center={center}
+                  onClick={onMarkerDragEndOrClick}
+                >
+                  <Marker position={currentPosition} draggable onDragEnd={onMarkerDragEndOrClick} />
+                </GoogleMap>
+              </LoadScript>
+            )}
             <form onSubmit={handleSubmit}>
               <input
                 required
@@ -93,26 +144,33 @@ const DayModal: FunctionComponent<DayModalProps> = ({ dateToCreateEvent, setDate
               <button>Adicionar</button>
             </form>
           </div>
-          {events.length > 0 &&
-            events.map((event, index) => {
-              const startAt = new Date(event.startAt);
-              const endAt = new Date(event.endAt);
-              const startAtHours = addZeroes(String(startAt.getHours()));
-              const startAtMinutes = addZeroes(String(startAt.getMinutes()));
-              const endAtHours = addZeroes(String(endAt.getHours()));
-              const endAtMinutes = addZeroes(String(endAt.getMinutes()));
-              return (
-                <li key={index}>
-                  {event.name} - <strong>Inicio</strong>: {startAtHours}:{startAtMinutes} / <strong>Fim</strong>:{' '}
-                  {endAtHours}:{endAtMinutes}
-                  <img
-                    src={removeIcon}
-                    className={styles.dayModalListRemove}
-                    onClick={() => onRemoveClick(index)}
-                  ></img>
-                </li>
-              );
-            })}
+          <div className={styles.dayModalList}>
+            {events.length > 0 &&
+              events.map((event, index) => {
+                const startAt = new Date(event.startAt);
+                const endAt = new Date(event.endAt);
+                const startAtHours = addZeroes(String(startAt.getHours()));
+                const startAtMinutes = addZeroes(String(startAt.getMinutes()));
+                const endAtHours = addZeroes(String(endAt.getHours()));
+                const endAtMinutes = addZeroes(String(endAt.getMinutes()));
+                return (
+                  <li key={index}>
+                    {event.name} - <strong>Inicio</strong>: {startAtHours}:{startAtMinutes} / <strong>Fim</strong>:{' '}
+                    {endAtHours}:{endAtMinutes}
+                    <img
+                      src={removeIcon}
+                      className={styles.dayModalListIcon}
+                      onClick={() => onRemoveClick(index)}
+                    ></img>
+                    <img
+                      src={marker}
+                      className={styles.dayModalListIcon}
+                      onClick={() => window.open(`https://maps.google.com/?q=${event.lat},${event.lng}`)}
+                    ></img>
+                  </li>
+                );
+              })}
+          </div>
         </div>
       </div>
     </div>
