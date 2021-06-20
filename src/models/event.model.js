@@ -22,6 +22,10 @@ const eventSchema = mongoose.Schema(
     lng: {
       type: Number, 
       required: true,
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
     }
   }
 )

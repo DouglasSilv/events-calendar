@@ -6,8 +6,8 @@ const daysInMonth = (month, year) => {
   return Array.from(Array(date).keys());
 };
 
-const countGroupedByMonth = async () => {
-  const events = await Event.find();
+const countGroupedByMonth = async userId => {
+  const events = await Event.find({ userId });
   const groupedEvents = {};
   Array(12).fill().forEach((month, index) => {
     groupedEvents[index] = events.filter(event => event.startAt.getMonth() === index).length;
@@ -15,8 +15,8 @@ const countGroupedByMonth = async () => {
   return groupedEvents;
 };
 
-const countMonthGroupedByDay = async monthIndex => {
-  const events = await Event.find();
+const countMonthGroupedByDay = async (monthIndex, userId) => {
+  const events = await Event.find({ userId });
   const groupedEvents = {};
   daysInMonth(monthIndex, new Date().getFullYear()).fill().forEach((_, index) => {
     const day = index + 1;
@@ -27,18 +27,20 @@ const countMonthGroupedByDay = async monthIndex => {
   return groupedEvents;
 };
 
-const getEventsByDay = async date => {
+const getEventsByDay = async (date, userId) => {
   return await Event.find({
     startAt:  {
       $gte: startOfDay(new Date(date)),
       $lte: endOfDay(new Date(date))
-    }
+    },
+    userId
   });
 };
 
-const deleteById = async id => {
+const deleteById = async (id, userId) => {
   await Event.findOneAndDelete( {
-    _id: id
+    _id: id,
+    userId
   });
 };
 

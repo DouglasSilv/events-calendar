@@ -100,7 +100,6 @@ const DayModal: FunctionComponent<DayModalProps> = ({ dateToCreateEvent, setDate
   };
 
   const onMarkerDragEndOrClick = (event: any) => {
-    console.log(event.latLng);
     const lat = event.latLng.lat();
     const lng = event.latLng.lng();
     setCurrentPosition({ lat, lng });
